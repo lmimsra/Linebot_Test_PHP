@@ -24,9 +24,17 @@ if ($message_type == "text") {
     $message_type = "text";
 }
 
+$post_data = [
+    "type" => $message_type,
+    "text" => $message_text
+];
+
+
+$result_data = sending_local($post_data);
+
 
 //返信実行
-sending_messages($accessToken, $replyToken, $message_type, $return_message_text);
+sending_messages($accessToken, $replyToken, $message_type, $result_data);
 ?>
 
 
@@ -58,6 +66,28 @@ function sending_messages($accessToken, $replyToken, $message_type, $return_mess
     ));
     $result = curl_exec($ch);
     curl_close($ch);
+}
+
+?>
+
+<?php
+function sending_local($post_data)
+{
+    //curl実行
+    $ch = curl_init("http://localhost:9000/");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json; charser=UTF-8',
+    ));
+
+    //レスポンスbodyを取得
+    $result = curl_exec($ch).file_get_contents('php://input');
+    curl_close($ch);
+
+    return $result;
 }
 
 ?>
