@@ -12,15 +12,21 @@ $message_type = $json_object->{"events"}[0]->{"message"}->{"type"};    //メッ�
 if ($message_type == "text") {
     $message_text = $json_object->{"events"}[0]->{"message"}->{"text"};    //メッセージ内容
 }
+
+$post_data = [
+    "text_type" => $message_type,
+    "text_body" => "テスト送信"
+];
+
 //メッセージタイプが「text」のときは適当な値を返すそれ以外の時は決まった文章を返す
 if ($message_type == "text") {
     //返信メッセージ
     if ($message_text == "scala") {
-
+      $return_message_text = sending_local($post_data);
     }else {
       $return_message_text = $message_text . "←とはどういう意味ですか？";
     }
-    
+
 } elseif ($message_type == "sticker") {
     $return_message_text = "そのスタンプかわいいね！";
     $message_type = "text";
@@ -29,13 +35,8 @@ if ($message_type == "text") {
     $message_type = "text";
 }
 
-$post_data = [
-    "text_type" => $message_type,
-    "text_body" => "テスト送信"
-];
 
 
-$result_data = sending_local($post_data);
 
 
 //返信実行
@@ -79,7 +80,7 @@ function sending_messages($accessToken, $replyToken, $message_type, $return_mess
 function sending_local($post_data)
 {
     //curl実行
-    $ch = curl_init("http://localhost:9000/");
+    $ch = curl_init("http://localhost:9000/line/request");
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
