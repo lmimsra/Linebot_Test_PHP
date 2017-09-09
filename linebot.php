@@ -15,7 +15,12 @@ if ($message_type == "text") {
 //メッセージタイプが「text」のときは適当な値を返すそれ以外の時は決まった文章を返す
 if ($message_type == "text") {
     //返信メッセージ
-    $return_message_text = $message_text . "←とはどういう意味ですか？";
+    if ($message_text == "scala") {
+
+    }else {
+      $return_message_text = $message_text . "←とはどういう意味ですか？";
+    }
+    
 } elseif ($message_type == "sticker") {
     $return_message_text = "そのスタンプかわいいね！";
     $message_type = "text";
@@ -25,8 +30,8 @@ if ($message_type == "text") {
 }
 
 $post_data = [
-    "type" => $message_type,
-    "text" => $message_text
+    "text_type" => $message_type,
+    "text_body" => "テスト送信"
 ];
 
 
@@ -34,7 +39,7 @@ $result_data = sending_local($post_data);
 
 
 //返信実行
-sending_messages($accessToken, $replyToken, $message_type, $result_data);
+sending_messages($accessToken, $replyToken, $message_type, $return_message_text);
 ?>
 
 
