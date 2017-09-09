@@ -80,18 +80,21 @@ function sending_messages($accessToken, $replyToken, $message_type, $return_mess
 function sending_local($post_data)
 {
     //curl実行
-    $ch = curl_init("http://localhost:9000/line/request");
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    $ch_local = curl_init("http://localhost:9000/line/request");
+    curl_setopt($ch_local, CURLOPT_POST, true);
+    curl_setopt($ch_local, CURLOPT_CUSTOMREQUEST, 'POST');
+    curl_setopt($ch_local, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch_local, CURLOPT_POSTFIELDS, json_encode($post_data));
+    curl_setopt($ch_local, CURLOPT_HTTPHEADER, array(
         'Content-Type: application/json; charser=UTF-8',
     ));
 
     //レスポンスbodyを取得
-    $result = curl_exec($ch)
-    curl_close($ch);
+    $response = curl_exec($ch_local);
+    curl_close($ch_local);
+    $header_size = curl_getinfo($ch_local, CURLINFO_HEADER_SIZE);
+    $header = substr($response, 0, $header_size);
+    $result = substr($response, $header_size);
 
     return $result;
 }
