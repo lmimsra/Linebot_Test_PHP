@@ -90,7 +90,7 @@ function sending_local($post_data)
     ));
 
     //レスポンスbodyを取得
-    $result = curl_exec($ch).file_get_contents('php://input');
+    $result = curl_exec($ch)
     curl_close($ch);
 
     return $result;
