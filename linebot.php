@@ -13,10 +13,7 @@ if ($message_type == "text") {
     $message_text = $json_object->{"events"}[0]->{"message"}->{"text"};    //メッセージ内容
 }
 
-$post_data = [
-    "text_type" => $message_type,
-    "text_body" => "テスト送信"
-];
+
 
 //メッセージタイプが「text」のときは適当な値を返すそれ以外の時は決まった文章を返す
 // if ($message_type == "text") {
@@ -37,7 +34,10 @@ $post_data = [
 
 if ($message_type == "text") {
   //返信メッセージ
-  $post_data->{"text_body"} = $message_text
+  $post_data = [
+      "text_type" => $message_type,
+      "text_body" => $message_text
+  ];
   $return_message_text = sending_local($post_data);
 
 } elseif ($message_type == "sticker") {
