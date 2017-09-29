@@ -1,6 +1,5 @@
 <?php
 
-$accessToken = 'X20v49IGjBZzfnQ2Ut/pxkysdn47JG+U0665H1LX0s0Y5nN5TLLPs2EZQ0n7BrAPa5Yl5SaxagLOia0+7LEJMA3O22g8tjJ9KbmOnA6wD5/uOtg4YySDFA+oTHOoDHWaLdGLAMRkOb3E5PJ8BQkDFgdB04t89/1O/w1cDnyilFU=';
 
 //ユーザーからのメッセージ取得
 $json_string = file_get_contents('php://input');
@@ -48,9 +47,11 @@ if ($message_type == "text") {
     $message_type = "text";
 }
 
+require_once('keys.php');
+
 
 //返信実行
-sending_messages($accessToken, $replyToken, $message_type, $return_message_text);
+sending_messages(getKey(), $replyToken, $message_type, $return_message_text);
 ?>
 
 
